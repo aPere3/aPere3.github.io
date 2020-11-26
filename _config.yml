@@ -6,10 +6,12 @@ markdown: kramdown
 highlighter: rouge
 logo: false
 paginate: 15
-baseurl: /kasper
-domain_name: "http://yourblog-domain.com"
+baseurl: ""
+domain_name: "https://blog.apere.me"
 google_analytics: "UA-XXXXXXXX-X"
-plugins: [jekyll-paginate]
+plugins: [
+    jekyll-paginate
+    ]
 
 # Details for the RSS feed generator
 url: ""
