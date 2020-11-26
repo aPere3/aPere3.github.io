@@ -8,6 +8,82 @@
 	display:inline;
 }
 
+// Adds a background image and changes the header size
+.no-cover.main-header {
+    background-image: url("../images/geometry2.png");
+    background-clip: border-box;
+    height: 20%;
+    max-height: 20%;
+}
+
+// Adds iosevka fonts
+@font-face {
+    font-family: "Iosevka curly";
+    src: url("../fonts/iosevka-curly-slab-thin.ttf")
+}
+
+@font-face {
+    font-family: "Iosevka curly";
+    src: url("../fonts/iosevka-curly-slab-thinitalic.ttf");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Iosevka curly";
+    src: url("../fonts/iosevka-curly-slab-regular.ttf");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Iosevka curly";
+    src: url("../fonts/iosevka-curly-slab-italic.ttf");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Iosevka";
+    src: url("../fonts/iosevka-ss05-italic.ttf");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Iosevka";
+    src: url("../fonts/iosevka-ss05-bolditalic.ttf");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Iosevka";
+    src: url("../fonts/iosevka-ss05-regular.ttf");
+}
+
+@font-face {
+    font-family: "Iosevka";
+    src: url("../fonts/iosevka-ss05-bold.ttf");
+    font-weight: bold
+}
+
+// We update the fonts
+[class^="icon-"]:before, [class*=" icon-"]:before {
+    font-family: "casper-icons", "Iosevka";
+}
+
+h1, h2, h3,
+h4, h5, h6,
+pre, code, tt,
+.main-nav a,
+.post-meta,
+.pagination,
+.site-footer  {
+    font-family: "Iosevka";
+}
+
+.page-title {
+    font-family: "Iosevka curly", bold;
+}
+
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
 	"syntax"
