@@ -9,10 +9,12 @@ paginate: 15
 baseurl: ""
 domain_name: "blog.apere.me"
 google_analytics: "UA-XXXXXXXX-X"
-plugins: [
+plugins:
+  [
     jekyll-paginate,
-    github-pages
-    ]
+    github-pages,
+    jekyll-org
+  ]
 
 # Details for the RSS feed generator
 url: ""
