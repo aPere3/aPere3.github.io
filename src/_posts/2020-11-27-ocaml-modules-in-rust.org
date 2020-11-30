@@ -1,0 +1,299 @@
+#+TITLE: Ocaml Modules In Rust
+#+LAYOUT: post
+#+CATEGORIES: Rust Ocaml
+
+* Introduction
+
+Earlier this year, the covid lockdown gave me the opportunity to take on a long awaited project of
+mine: learning the Ocaml language. Working at Inria, I heard quite a lot about how beautiful a
+language it was, but until then, I did not take the time to get a proper introduction. I spent some
+days going through the [[https://dev.realworldocaml.org/][Real World Ocaml]] book, which not only gave me a broader perspective on the
+language, but more importantly, on functional languages in general. Indeed, /Rust/ was the first
+language with functional features I encountered, and until then, I always felt I missed some
+language features to feel the thrill of functional programming. Now that I learned more about Ocaml,
+I feel like Rust already provides most of the features that makes Ocaml great:
++ A good typing system with ADTs
++ Pattern matching
++ Non-mutability by default
++ Polymorphism with traits
++ ...
+
+One thing I really liked about Ocaml, that has no direct equivalent in Rust though, is its *module
+system*. It is often cited as one of the killer features of Ocaml, and I must say, I really
+enjoyed using it. In constrast with Rust, Ocaml modules have a broader use in the language. While in
+Rust, modules are merely used as namespaces, Ocaml support modules as first-class citizens of the
+language. In essence, Ocaml modules have several benefits:
++ Modules are /typed/, and their type is called a /signature/.
++ Modules can be treated as /values/ of a given /signature/.
++ Multiple modules of the same signature can exist at the same time.
++ Modules values can be manipulated thanks to module-level functions named /Functors/.
+
+Lately I was working on a project in Rust, involving benchmarking different implementations of the
+same module. To make it work, I tried different variations of the same pattern. First, I implemented
+the same public interface in two modules:
+#+begin_src rust
+// In fast.rs
+pub struct MyInputStruct{
+    // some fields
+}
+pub struct MyOutputStruct{
+    // some fields
+}
+pub fn MyFunc(input: MyStruct) -> MyOutputStruct{
+    // some faster logic.
+}
+// Other private stuffs...
+
+// In slow.rs
+pub struct MyInputStruct{
+    // some fields
+}
+pub struct MyOutputStruct{
+    // some fields
+}
+pub fn MyFunc(input: MyStruct) -> MyOutputStruct{
+    // Some slower logic
+}
+// Other private stuffs
+#+end_src
+Then, in the parent module, I used feature-flags to conditionally import one of the two
+implementations:
+#+begin_src rust
+#[cfg(feature="fast-implem")]
+mod fast;
+#[cfg(feature="fast-implem")]
+use fast as imp;
+#[cfg(not(feature="fast-implem"))]
+mod slow;
+#[cfg(not(feature="fast-implem"))]
+use slow as imp;
+// Do stuffs with imp
+#+end_src
+This seem to be a rather common pattern in /Rust/, though it can be implemented slightly differently
+depending on the tastes of the developper. Problem is, this kind of polymorphism has several
+drawbacks, the main being that the interface that must be implemented by the different modules is
+never explicited anywhere. Iterating over the code can quickly lead to change in this interface, and
+it can be complicated to keep it coherent and well implemented in all submodules.
+
+This situations reminded me a lot of the ocaml modules,
+
+
+To do that, I used feature flags which allowed me to switch between different
+implementations. Despite the fact that this works well, it
+
+While learning about Ocaml, I discovered one of its killer feature, namely its *module system*.
+
+is right to say that it gives a very neat way to express
+
+gave me the opportunity to learn more about the famous ocaml langua
+From my perspective, Ocaml is a particularly well designed language. Though I have not been able to
+use it a lot over the past years,
+Lately, I've been working on a project involving different implementations of the same module
+interface in ~Rust~.One thing that makes it beautiful
+is its module system. This module system allows three very interesting things:
++ Declare module *signatures*, which can be seen as module types.
++ Implement module *signatures*, with concrete modules exposing the types and functions of the
+  signature.
++ Treat modules as values, allowing to apply special functions to it, named *Functors*.
+
+This set of feature is incredibly powerful and allows
++ To clearly separate responsibilities in the program thanks to precise interfaces (the signatures)
++ To use different implementations of the same
+
+In oop, people tend to use interfaces to define the expected behavior of a class. This is pretty
+close to the signature feature of the ocaml module system, but ocaml allows something that very few
+(if any) language is able to do: define interfaces over multiple types at once. In essence, the
+ocaml module system extends the usual oop interfacing facilities to allow to specify the expected
+behavior of multiple types at the same time, and the way they are related.
+
+* A tour of modules in Ocaml
+
+** Defining a module signature
+
+#+begin_src ocaml
+(* This is a type signature, or a module type if you prefer :) *)
+module type MyModuleSig = sig
+  (* The implementor must expose a type named `t` in its public interface *)
+  type t
+  (* The implementor must expose a type named `b` in its pubnlic interface *)
+  type b
+  (* The implementor must expose a function that takes the two types and return an integer *)
+  val some_func : t -> b -> int
+  (* The implementor must expose values *)
+  val t_init: t
+  val b_init: b
+end
+#+end_src
+
+
+** Implementing a module signature
+
+#+begin_src ocaml
+module Implem1: MyModuleSig = struct (* Note that here the struct keyword denotes a module *)
+  type t = int
+  type b = int
+  let private_func t b = t + b
+  let some_func = private_func
+  let t_init = 0
+  let b_init = 0
+end
+#+end_src
+
+#+begin_src ocaml
+let some_t = Implem1.t_init
+let some_b = Implem1.b_init
+let result = Implem1.some_func some_t some_b
+#+end_src
+
+
+* Modules in rust
+#+begin_src rust :tangle modules.crs
+#!/usr/bin/env run-cargo-script
+#+end_src
+
+Note that a trait with associated type is pretty close to a module signature in the ocaml meaning:
+#+begin_src rust :tangle modules.crs
+pub trait MyModuleSig {
+    type T;
+    type B;
+
+    const T_INIT: Self::T;
+    const B_INIT: Self::B;
+
+    fn some_func(t: Self::T, b: Self::B) -> i32;
+}
+#+end_src
+
+#+RESULTS:
+
+#+begin_src rust :tangle modules.crs
+mod my_module{
+    pub struct T(i32);
+    pub struct B(i32);
+
+    pub const T_INIT: T = T(0);
+    pub const B_INIT: B = B(0);
+
+    pub fn some_func(t: T, b: B) -> i32 {
+        t.0 + b.0
+    }
+}
+#+end_src
+
+#+begin_src rust :tangle modules.crs
+// This is close to a value module
+struct MyModuleAsSigObject;
+impl MyModuleSig for MyModuleAsSigObject{
+    type T = my_module::T;
+    type B = my_module::B;
+
+    const T_INIT: Self::T = my_module::T_INIT;
+    const B_INIT: Self::B = my_module::B_INIT;
+
+    fn some_func(t: my_module::T, b: my_module::B) -> i32{
+        my_module::some_func(t, b)
+    }
+}
+
+// Now, we re-export the module as implementor of the signature
+mod my_module_as_sig{
+    use super::{MyModuleAsSigObject, MyModuleSig};
+
+    pub type T = <MyModuleAsSigObject as MyModuleSig>::T;
+    pub type B = <MyModuleAsSigObject as MyModuleSig>::B;
+
+    pub const T_INIT: T = <MyModuleAsSigObject as MyModuleSig>::T_INIT;
+    pub const B_INIT: B = <MyModuleAsSigObject as MyModuleSig>::B_INIT;
+
+    pub fn some_func(t: T, b: B) -> i32{
+        <MyModuleAsSigObject as MyModuleSig>::some_func(t, b)
+    }
+}
+#+end_src
+
+#+RESULTS:
+: error: Could not compile `cargoun0IB1`.
+
+#+BEGIN_SRC rust :tangle module.crs
+// The signature of the input module
+pub trait InputSig{
+    type T;
+    const T_INIT;
+    fn some_func(t1: T, t2: T) -> i32;
+}
+
+
+mod input_mod{
+    pub struct T(i32);
+    pub const T_INIT: T = T(0);
+    pub fn some_func(t1: T, t2: T) -> i32 {
+        t1.0 + t2.0
+    }
+}
+
+struct InputModObject;
+impl InputSig for InputModObject{
+    type T = input_mod::T;
+    const T_INIT: Self::T = input_mod::T_INIT;
+    fn some_func(t1: input_mod::T, t2: input_mod::T) -> i32{
+        input_mod::some_func(t, b)
+    }
+}
+
+mod input_mod_as_sig{
+    use super::{InputSig, InputModObject};
+    pub type T = <InputModObject as InputSig>::T;
+    pub const T_INIT: T = <InputModObject as InputSig>::T_INIT;
+    pub fn some_func(t1: T, t2: T) -> i32{
+        <InputModObject as InputSig>::some_func(t1, t2)
+    }
+}
+#+END_SRC
+
+#+begin_src rust :tangle module.crs
+// We declare the output signature
+pub trait OutputSig {
+    type T;
+    type B;
+
+    const T_INIT: Self::T;
+    const B_INIT: Self::B;
+
+    fn some_func(t: Self::T, b: Self::B) -> i32;
+}
+
+// We declare the functor
+struct FunctorObject<M: InputSig>(M);
+impl<M> OutputSig for FunctorObject(M) where M: InputSig{
+    type T = <M as InputSig>::T;
+    type B = <M as InputSig>::T;
+    const T_INIT = <M as InputSig>::T_INIT;
+    const B_INIT = <M as InputSig>::T_INIT;
+    fn some_func(t: Self::T, b: Self::B) -> i32{
+        <M as InputSig>::some_func(t, b)
+    }
+}
+
+// We apply the functor
+type OutputModObject = FunctorObject(InputModObject);
+
+mod output_mod_as_sig{
+    use super::{OutputSig, OutputModObject};
+
+    pub type T = <OutputModObject as OutputSig>::T;
+    pub type B = <OutputModObject as OutputSig>::B;
+
+    pub const T_INIT: T = <OutputModObject as OutputSig>::T_INIT;
+    pub const B_INIT: B = <OutputModObject as OutputSig>::B_INIT;
+
+    pub fn some_func(t: T, b: B) -> i32{
+        <OutputModObject as OutputSig>::some_func(t, b)
+    }
+}
+#+end_src
+
+#+begin_src rust :tangle modules.crs
+fn main() {
+    println!("That's all functors!");
+}
+#+end_src

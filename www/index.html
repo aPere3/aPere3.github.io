@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>APéRé - Notes on code, diy, surf, mountain and more.</title>
+    <meta name="description" content="Notes on code, diy, surf, mountain and more." />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+    <!-- Customisation  -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css " />
+
+</head>
+<body class="home-template">
+
+    <header class="main-header no-cover">
+    <nav class="main-nav overlay clearfix">
+            
+        <a class="subscribe-button icon-feed" href="/feed.xml ">Subscribe</a>
+    </nav>
+    <div class="vertical">
+        <div class="main-header-content inner">
+            <h1 class="page-title">/* APéRé */</h1>
+            <h2 class="page-description">
+                 Notes on code, diy, surf, mountain and more.. 
+                <br>
+                 <a href='/about.html'> About me </a> 
+            </h2>
+        </div>
+    </div>
+    <a class="scroll-down icon-arrow-left" href="#content" data-offset="-45"><span class="hidden">Scroll Down</span></a>
+</header>
+
+
+<main id="content" class="content" role="main">
+
+
+
+    <div class="extra-pagination inner">
+        <nav class="pagination" role="pagination">
+    
+    <span class="page-number"> Page 1 of 1 </span>
+     
+</nav>
+    </div>
+
+    
+
+    <article class="post">
+        <header class="post-header">
+            <h2 class="post-title"><a href="/rust/ocaml/2020/11/27/ocaml-modules-in-rust.html">Ocaml Modules In Rust</a></h2>
+        </header>
+        <section class="post-excerpt">
+             <h1>Introduction</h1>
+<p>Earlier this year, the covid lockdown gave me the opportunity to take on a long awaited project of
+  mine: learning the Ocaml language. Working at Inria, I heard quite a lot about how beautiful a
+  language it was, but until then, I did not take the time to get a proper introduction. I spent some
+  days going through the <a href="https://dev.realworldocaml.org/">Real World Ocaml</a> book, which not only gave me a broader perspective on the
+  language, but more importantly, on functional languages in general. Indeed, <i>Rust</i> was the first
+  language with functional features I encountered, and until then, I always felt I missed some
+  language features to feel the thrill of functional programming. Now that I learned more about Ocaml,
+  I feel like Rust already provides most of the features that makes Ocaml great:</p>
+<ul>
+  <li>A good typing system with ADTs</li>
+  <li>Pattern matching</li>
+  <li>Non-mutability by default</li>
+  <li>Polymorphism with traits</li>
+  <li>&#8230;</li>
+</ul>
+<p>One thing I really liked about Ocaml, that has no direct equivalent in Rust though, is its <b>module
+  system</b>. It is often cited as one of the killer features of Ocaml, and I must say, I really
+  enjoyed using it. In constrast with Rust, Ocaml modules have a broader use in the language. While in
+  Rust, modules are merely used as namespaces, Ocaml support modules as first-class citizens of the
+  language. In essence, Ocaml modules have several benefits:</p>
+<ul>
+  <li>Modules are <i>typed</i>, and their type is called a <i>signature</i>.</li>
+  <li>Modules can be treated as <i>values</i> of a given <i>signature</i>.</li>
+  <li>Multiple modules of the same signature can exist at the same time.</li>
+  <li>Modules values can be manipulated thanks to module-level functions named <i>Functors</i>.</li>
+</ul>
+<p>Lately I was working on a project in Rust, involving benchmarking different implementations of the
+  same module. To make it work, I tried different variations of the same pattern. First, I implemented
+  the same public interface in two modules:</p>
+<div class="highlight"><pre><span></span><span class="c1">// In fast.rs</span>
+<span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">MyInputStruct</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// some fields</span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">MyOutputStruct</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// some fields</span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">MyFunc</span><span class="p">(</span><span class="n">input</span>: <span class="nc">MyStruct</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nc">MyOutputStruct</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// some faster logic.</span>
+<span class="p">}</span><span class="w"></span>
+<span class="c1">// Other private stuffs...</span>
+
+
+ <a class="read-more" href="/rust/ocaml/2020/11/27/ocaml-modules-in-rust.html">&raquo;</a>
+        </section>
+        <footer class="post-meta">
+            
+                <img class="author-thumb" src="/assets/images/profile.jpg" alt="Author's profile picture" nopin="nopin" />
+                apere
+            
+             
+                on Rust and Ocaml 
+            
+            <time class="post-date" datetime="2020-11-27">
+                27 Nov 2020
+            </time> 
+        </footer>
+    </article>
+
+    
+
+    <article class="post">
+        <header class="post-header">
+            <h2 class="post-title"><a href="/thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html">Welcome to Jekyll!</a></h2>
+        </header>
+        <section class="post-excerpt">
+            <p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory - edit this post and re-build (or run with the <code class="language-plaintext highlighter-rouge">-w</code> switch) to see your changes!
+To add new posts, simply add a file in the <code class="language-plaintext highlighter-rouge">_posts</code> directory that follows the convention: YYYY-MM-DD-name-of-post.ext.</p>
+
+ <a class="read-more" href="/thriller/comedy/horror/2013/11/10/welcome-to-jekyll.html">&raquo;</a>
+        </section>
+        <footer class="post-meta">
+            
+                <img class="author-thumb" src="/assets/images/profile.jpg" alt="Author's profile picture" nopin="nopin" />
+                apere
+            
+             
+                on Thriller, Comedy, and Horror 
+            
+            <time class="post-date" datetime="2013-11-10">
+                10 Nov 2013
+            </time> 
+        </footer>
+    </article>
+
+    
+
+    <nav class="pagination" role="pagination">
+    
+    <span class="page-number"> Page 1 of 1 </span>
+     
+</nav>
+
+</main>
+
+    <footer class="site-footer clearfix">
+      <section class="copyright">
+        <a href="">APéRé</a> &copy; 
+              2020 &bull; All rights reserved.
+      </section>
+      <section class="poweredby">Made with Jekyll using 
+          <a href="http://github.com/rosario/kasper">Kasper theme</a>,
+          <a href="https://www.toptal.com/designers/subtlepatterns/geometry-2/">Subtle Pattern</a>,
+          <a href="https://github.com/be5invis/iosevka">Iosevka font</a>
+      </section>
+    </footer>
+    
+    <script type="text/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/assets/js/index.js"></script>
+
+    <!-- Google Analytics Tracking code -->
+    <!-- <script type="text/javascript">
+
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+         _gaq.push(['_trackPageview']);
+
+         (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+
+         </script> -->
+</body>
+</html>

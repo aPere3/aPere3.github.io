@@ -2,11 +2,13 @@ name: "APéRé"
 description: Notes on code, diy, surf, mountain and more.
 meta_description: "Notes on code, diy, surf, mountain and more."
 
+destination: "../www"
+baseurl: ""
+
 markdown: kramdown
 highlighter: rouge
 logo: true
 paginate: 15
-baseurl: ""
 domain_name: "blog.apere.me"
 google_analytics: "UA-XXXXXXXX-X"
 plugins:
