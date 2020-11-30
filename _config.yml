@@ -2,7 +2,7 @@ name: "APéRé"
 description: Notes on code, diy, surf, mountain and more.
 meta_description: "Notes on code, diy, surf, mountain and more."
 
-destination: "../www"
+destination: "./docs"
 baseurl: ""
 
 markdown: kramdown
